@@ -1,0 +1,49 @@
+-- SELECT rental.MEMBER_ID, member.FIRST,member.LAST
+-- FROM rental
+-- INNER JOIN member ON rental.MEMBER_ID=rental.MEMBER_ID
+-- WHERE rental.RETURN_DATE=NULL;
+-- sql server 
+create database newdb;
+CREATE TABLE Artist(
+    aid int PRIMARY KEY,
+    aname varchar(80)
+);
+CREATE TABLE _Release(
+    rid int PRIMARY KEY,
+    rtitle varchar(80),
+    year int(80),
+    aid int,
+    FOREIGN KEY (aid ) REFERENCES Artist(aid )
+);
+CREATE TABLE label(
+    lid int PRIMARY KEY,
+    lname varchar(80),
+    labbr varchar(80)
+);
+CREATE TABLE Rerelease(
+    cat varchar(80) PRIMARY KEY,
+    rid int ,
+    upc varchar(80),
+    lable int,
+    year int CHECK (year>1900),
+    medium varchar(80),
+    FOREIGN KEY (rid ) REFERENCES _Release(rid ),
+    FOREIGN KEY (lable) REFERENCES Label(lid )
+);
+CREATE TABLE Song(
+    sid int PRIMARY KEY,
+    stitle varchar(80),
+    duration int CHECK (duration>0),
+    remix_of varchar(80),
+    artist int,
+    FOREIGN KEY (artist ) REFERENCES Artist(aid)  
+);
+CREATE TABLE AlbumTrack(
+    rid int,
+    cat varchar(80),
+    sid int,
+    trackno int,
+    FOREIGN KEY (rid ) REFERENCES _release(rid),
+    FOREIGN KEY (cat ) REFERENCES Rerelease(cat),
+    FOREIGN KEY (sid ) REFERENCES Song(sid)
+);
